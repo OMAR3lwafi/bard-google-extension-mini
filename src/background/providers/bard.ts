@@ -44,13 +44,13 @@ export async function sendMessageFeedbackBard(data: unknown) {
   // await request(token, 'POST', '/conversation/message_feedback', data);
 }
 
-export async function setConversationProperty(
-  token: string,
-  conversationId: string,
-  propertyObject: object,
-) {
-  await request(token, 'PATCH', `/conversation/${conversationId}`, propertyObject)
-}
+// export async function setConversationProperty(
+//   token: string,
+//   conversationId: string,
+//   propertyObject: object,
+// ) {
+//   await request(token, 'PATCH', `/conversation/${conversationId}`, propertyObject)
+// }
 
 const KEY_ACCESS_TOKEN = 'accessToken'
 
@@ -117,9 +117,9 @@ export class BARDProvider implements Provider {
   async generateAnswer(params: GenerateAnswerParams) {
     let conversationId: string | undefined
     const cleanup = () => {
-      if (conversationId) {
-        setConversationProperty(this.token, conversationId, { is_visible: false })
-      }
+      // if (conversationId) {
+      //   setConversationProperty(this.token, conversationId, { is_visible: false })
+      // }
     }
     this.conversationContext = params.conversationContext
 
