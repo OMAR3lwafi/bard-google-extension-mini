@@ -32,7 +32,11 @@ export enum Language {
   Portuguese = 'portuguese',
 }
 
+export const BASE_URL = 'https://bard.google.com'
 export const Prompt = 'Provide some insights on the following search query: '
+export const followupQuestionsPrompt = () => {
+  return `After that suggest 3-4 follow-up questions as bullet points output for the above search query(You must use the following template: ### Follow-up Questions:).`
+};
 
 export interface SitePrompt {
   site: string

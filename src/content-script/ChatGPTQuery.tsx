@@ -3,11 +3,14 @@ import { useEffect, useState } from 'preact/hooks'
 import { memo, useCallback, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeHighlight from 'rehype-highlight'
+import { toast, Zoom } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Browser from 'webextension-polyfill'
 import { captureEvent } from '../analytics'
 import { Answer } from '../messaging'
 import ChatGPTFeedback from './ChatGPTFeedback'
 import { isBraveBrowser, shouldShowRatingTip } from './utils.js'
+import { isIOS, isSafari, extract_followups_section, extract_followups } from '../utils.js'
 
 export type QueryStatus = 'success' | 'error' | undefined
 
@@ -54,6 +57,7 @@ function ChatGPTQuery(props: Props) {
       } else if (msg.error) {
         setError(msg.error)
         setStatus('error')
+        toast.error(msg.error, { position: 'bottom-right', transition: Zoom })
       } else if (msg.event === 'DONE') {
         setDone(true)
         setReQuestionDone(true)
@@ -107,6 +111,9 @@ function ChatGPTQuery(props: Props) {
           setRequestionList(requestionListValue)
           const latestAnswerText = requestionList[questionIndex]?.answer?.text
           setReQuestionLatestAnswerText(latestAnswerText)
+        } else if (msg.error) {
+          setReError(msg.error)
+          toast.error(msg.error, { position: 'bottom-right', transition: Zoom })
         } else if (msg.event === 'DONE') {
           setReQuestionDone(true)
           setQuestionIndex(questionIndex + 1)
@@ -150,6 +157,33 @@ function ChatGPTQuery(props: Props) {
     }
   }, [requestionList, questionIndex])
 
+  const FollowupQuestionFixed = ({
+    followup_question,
+  }: {
+    followup_question: string | undefined
+  }) => {
+    const clickCopyToInput = useCallback(async () => {
+      if (reQuestionDone) {
+        inputRef.current.value = followup_question
+        setTimeout(() => {
+          requeryHandler()
+        }, 500)
+      } else {
+        const warnMsg = 'Wait untill the earlier prompt completes'
+        console.log(warnMsg + '..')
+        toast.warn(warnMsg, { position: 'bottom-right', transition: Zoom })
+      }
+    }, [followup_question])
+
+    return (
+      <div className="followup-question-container" onClick={clickCopyToInput}>
+        <ReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]}>
+          {followup_question}
+        </ReactMarkdown>
+      </div>
+    )
+  }
+
   const ReQuestionAnswerFixed = ({ text }: { text: string | undefined }) => {
     if (!text) return <p className="text-[#b6b8ba] animate-pulse">Answering...</p>
     return (
@@ -169,6 +203,11 @@ function ChatGPTQuery(props: Props) {
   }
 
   if (answer) {
+    console.debug("ChatGPTQuery answer2=", answer);
+    let followup_section = extract_followups_section(answer.text);
+    let final_followups = extract_followups(followup_section);
+    console.debug("ChatGPTQuery followup_section=", followup_section);
+    console.debug("ChatGPTQuery final_followups=", final_followups);
     return (
       <div className="markdown-body gpt-markdown" id="gpt-answer" dir="auto">
         <div className="gpt-header">
@@ -183,7 +222,7 @@ function ChatGPTQuery(props: Props) {
           />
         </div>
         <ReactMarkdown rehypePlugins={[[rehypeHighlight, { detect: true }]]}>
-          {answer.text}
+          {answer.text.replace(followup_section, "")}
         </ReactMarkdown>
         <div className="question-container">
           {requestionList.map((requestion) => (
@@ -204,6 +243,17 @@ function ChatGPTQuery(props: Props) {
             </div>
           ))}
         </div>
+
+        {final_followups.length==0?<></>:
+          <div className="all-questions-container">
+            {final_followups.map((followup_question) => (
+              <div key={followup_question.id} className="ith-question-container">
+                {(
+                  <FollowupQuestionFixed followup_question={followup_question} />
+                )}
+              </div>
+            ))}
+          </div>}
 
         {done && (
           <form

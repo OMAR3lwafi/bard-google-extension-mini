@@ -1,6 +1,7 @@
 import { render } from 'preact'
+import { ToastContainer } from 'react-toastify'
 import '../base.css'
-import { getUserConfig, Theme } from '../config'
+import { getUserConfig, Theme, followupQuestionsPrompt } from '../config'
 import { detectSystemColorScheme } from '../utils'
 import ChatGPTContainer from './ChatGPTContainer'
 import { config, SearchEngine } from './search-engine-configs'
@@ -36,11 +37,14 @@ async function mount(question: string, promptSource: string, siteConfig: SearchE
   }
 
   render(
-    <ChatGPTContainer
-      question={question}
-      promptSource={promptSource}
-      triggerMode={userConfig.triggerMode || 'always'}
-    />,
+    <>
+      <ChatGPTContainer
+        question={question}
+        promptSource={promptSource}
+        triggerMode={userConfig.triggerMode || 'always'}
+      />
+      <ToastContainer />
+    </>,
     container,
   )
 }
@@ -74,7 +78,7 @@ export async function requeryMount(question: string, index: number) {
 }
 
 const siteRegex = new RegExp(Object.keys(config).join('|'))
-let siteName
+let siteName: string = "";
 try {
   siteName = location.hostname.match(siteRegex)![0]
 } catch (error) {
@@ -83,7 +87,7 @@ try {
 const siteConfig = config[siteName]
 
 async function run() {
-  const searchInput = getPossibleElementByQuerySelector<HTMLInputElement>(siteConfig.inputQuery)
+  // const searchInput = getPossibleElementByQuerySelector<HTMLInputElement>(siteConfig.inputQuery)
   console.debug('Try to Mount chat-gpt-container on', siteName)
 
   if (siteConfig.bodyQuery) {
@@ -101,8 +105,9 @@ async function run() {
       const question = found?.prompt ?? userConfig.prompt
       const promptSource = found?.site ?? 'default'
 
-      console.log('final prompt:', question + bodyInnerText)
-      mount(question + bodyInnerText, promptSource, siteConfig)
+      const final_prompt = question + bodyInnerText + '. ' + followupQuestionsPrompt(bodyInnerText)
+      console.log('final prompt:', final_prompt) // question + bodyInnerText)
+      mount(final_prompt, promptSource, siteConfig)
     }
   }
 }
