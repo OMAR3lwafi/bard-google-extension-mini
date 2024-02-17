@@ -1,9 +1,9 @@
 
-<h1 align="center">GoogleBard</h1>
+<h1 align="center">Google Gemini(formerly Bard)</h1>
 
 <div align="center">
 
-### GoogleBard is a google+bard+chatgpt app
+### Google Gemini(formerly Bard) is a google+bard+chatgpt app
 
 [![author][author-image]][author-url]
 [![license][license-image]][license-url]
@@ -21,7 +21,7 @@ English &nbsp;&nbsp;|&nbsp;&nbsp; [Indonesia](README_IN.md) &nbsp;&nbsp;|&nbsp;&
 
 ### Install
 
-<a href="https://chromewebstore.google.com/detail/googlebard-chat-with-bard/pkeofncjnjaleflnefmnnlabbfigfjhd">
+<a href="https://chromewebstore.google.com/detail/Google Gemini(formerly Bard)-chat-with-bard/pkeofncjnjaleflnefmnnlabbfigfjhd">
     <img src="https://user-images.githubusercontent.com/64502893/231991498-8df6dd63-727c-41d0-916f-c90c15127de3.png" width="200" alt="Get MultiGPT for Chromium">    
 </a><a href="https://microsoftedge.microsoft.com/addons/detail/hdlddhcngcdpcgajecjoccekfofmllfn">
     <img src="https://user-images.githubusercontent.com/64502893/231991158-1b54f831-2fdc-43b6-bf9a-f894000e5aa8.png" width="160" alt="Get MultiGPT for Microsoft Edge">
