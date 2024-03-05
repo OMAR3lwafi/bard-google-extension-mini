@@ -28,11 +28,13 @@ https://sites.google.com/view/geminiforsearch
     <img src="https://user-images.githubusercontent.com/64502893/231991158-1b54f831-2fdc-43b6-bf9a-f894000e5aa8.png" width="160" alt="Get MultiGPT for Microsoft Edge">
 </a>
 <a href="https://microsoftedge.microsoft.com/addons/detail/hdlddhcngcdpcgajecjoccekfofmllfn">
-    <img src="https://user-images.githubusercontent.com/64502893/231991158-1b54f831-2fdc-43b6-bf9a-f894000e5aa8.png" width="160" alt="Get MultiGPT for Mozilla Firefox Mozilla Firefox">
+    <img src="https://github.com/SingularityLabs-ai/bard-google-extension-mini/assets/2527354/baa2d533-b335-4cc6-a2d0-54d2ccb600f8" width="195" alt="Get MultiGPT for Mozilla Firefox Mozilla Firefox">
 </a>
 </a><a href="https://chromewebstore.google.com/detail/Google Gemini(formerly Bard)-chat-with-bard/pkeofncjnjaleflnefmnnlabbfigfjhd">
     <img src="https://github.com/SingularityLabs-ai/MultiTranslate-mini/assets/2527354/24646859-1191-423a-a84a-1c3574c20864" width="160" alt="Get MultiGPT for Brave">
 </a>
+
+
 
 ##
 
